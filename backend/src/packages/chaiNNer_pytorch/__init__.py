@@ -78,6 +78,12 @@ package = add_package(
     dependencies=[
         *get_pytorch(),
         Dependency(
+            display_name="Torch-directml",
+            pypi_name="torch-directml",
+            version="0.2.5.dev240914",
+            size_estimate=20 * MB,
+        ),
+        Dependency(
             display_name="FaceXLib",
             pypi_name="facexlib",
             version="0.3.0",
