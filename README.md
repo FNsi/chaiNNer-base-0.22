@@ -15,6 +15,10 @@
 
 A node-based image processing GUI aimed at making chaining image processing tasks easy and customizable. Born as an AI upscaling application, chaiNNer has grown into an extremely flexible and powerful programmatic image processing application.
 
+!!!CAUSION!!!
+!!!WINDOWS ONLY!!!
+!!!CANNOT SWITCH TO CUDA IN PYTORCH BANKEND!!!
+
 ChaiNNer gives you a level of customization of your image processing workflow that very few others do. Not only do you have full control over your processing pipeline, you can do incredibly complex tasks just by connecting a few nodes together.
 
 ChaiNNer is also cross-platform, meaning you can run it on Windows, MacOS, and Linux.
