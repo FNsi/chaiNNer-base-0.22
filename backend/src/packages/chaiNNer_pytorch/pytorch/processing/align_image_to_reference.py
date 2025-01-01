@@ -135,6 +135,8 @@ def align_images(
     state_dict = torch.load(model_full_path, map_location=device)
     new_state_dict = {k.replace("module.", ""): v for k, v in state_dict.items()}
     model.load_state_dict(new_state_dict)
+    device = 'privateuseone'
+    model.to('privateuseone')
     model.eval()
 
     # convert to tensors

@@ -27,8 +27,8 @@ def inpaint(
         # TODO: use bfloat16 if RTX
         use_fp16 = options.use_fp16 and model.supports_half
         dtype = torch.float16 if use_fp16 else torch.float32
-        device = options.device
-
+#        device = options.device
+        device = 'privateuseone'
         model = model.to(device, dtype)
 
         img_tensor = np2tensor(img, change_range=True)

@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
 import torch
+import torch_directml
+dml = torch_directml.device()
 from sanic.log import logger
 
 from api import DropdownSetting, NodeContext, NumberSetting, ToggleSetting
@@ -97,11 +99,12 @@ class PyTorchSettings:
     # PyTorch 2.0 does not support FP16 when using CPU
     def __post_init__(self):
         if self.use_cpu and self.use_fp16:
-            object.__setattr__(self, "use_fp16", False)
+ #           object.__setattr__(self, "use_fp16", False)
+            object.__setattr__(self, "use_fp16", True)
             logger.info("Falling back to FP32 mode.")
 
     @property
-    def device(self) -> torch.device:
+    def device(self) -> torch_directml.device:
         # CPU override
         if self.use_cpu:
             device = "cpu"
@@ -117,12 +120,13 @@ class PyTorchSettings:
         ):  # type: ignore -- older pytorch versions dont support this technically
             device = "mps"
         # Check for DirectML
-        elif hasattr(torch, "dml") and torch.dml.is_available():  # type: ignore
-            device = "dml"
+        elif hasattr(torch.backends, "privateuseone")   and torch_directml.is_available():  # type: ignore
+            device = "privateuseone"
+#            device = "cpu"
         else:
             device = "cpu"
 
-        return torch.device(device)
+#        return torch.device(device)
 
 
 def get_settings(context: NodeContext) -> PyTorchSettings:

@@ -16,6 +16,7 @@ from nodes.utils.utils import get_h_w_c
 from ...settings import get_settings
 from .. import processing_group
 
+#device = 'privateuseone'
 
 def wavelet_blur(image: torch.Tensor, radius: int) -> torch.Tensor:
     kernel_vals = [
@@ -83,8 +84,8 @@ def wavelet_color_fix_node(
         safe_cuda_cache_empty,
         after="node" if exec_options.force_cache_wipe else "chain",
     )
-    device = exec_options.device
-
+ #   device = exec_options.device
+    device = 'privateuseone'
     # convert to tensors
     target_tensor = np2tensor(target_img, change_range=True).to(device)
     source_tensor_resized = np2tensor(source_img_resized, change_range=True).to(device)

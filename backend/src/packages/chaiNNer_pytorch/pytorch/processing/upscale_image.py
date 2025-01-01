@@ -37,7 +37,9 @@ from .. import processing_group
 
 MODEL_BYTES_CACHE = weakref.WeakKeyDictionary()
 
-
+import torch_directml
+dml = torch_directml.device()
+device = 'privateuseone'
 def upscale(
     img: np.ndarray,
     model: ImageModelDescriptor,
@@ -51,8 +53,8 @@ def upscale(
 
         # TODO: use bfloat16 if RTX
         use_fp16 = options.use_fp16 and model.supports_half
-        device = options.device
-
+#        device = options.device
+        device = 'privateuseone'
         if model.tiling == ModelTiling.INTERNAL:
             # disable tiling if the model already does it internally
             tile_size = NO_TILING
@@ -84,6 +86,19 @@ def upscale(
                     )
                 )
             elif device.type == "cpu":
+                free = psutil.virtual_memory().available
+                if options.budget_limit > 0:
+                    free = min(options.budget_limit * 1024**3, free)
+                budget = int(free * 0.8)
+                return MaxTileSize(
+                    estimate_tile_size(
+                        budget,
+                        model_bytes,
+                        img,
+                        4,
+                    )
+                )
+            elif device.type == "privateuseone":
                 free = psutil.virtual_memory().available
                 if options.budget_limit > 0:
                     free = min(options.budget_limit * 1024**3, free)
